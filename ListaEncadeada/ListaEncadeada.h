@@ -8,8 +8,8 @@
  * A lista é constituída de um header, que contém o endereço do primeiro nó. E um contador de elementos.
  *            Estrutura da lista:                    Estrutura do nó:
  *  +======================================+  +================================+
- *  * Quant                                *  * Pointer                        *
- *  * Header                               *  * Data                           *
+ *  * Quant                                *  * Prox:                          *
+ *  * Header                               *  * Data:                          *
  *  +======================================+  +================================+ 
  * @Author: Derik
  * @Data: Oct, 2019
