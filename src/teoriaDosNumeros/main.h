@@ -6,25 +6,8 @@
   #include <iostream>
 //=================================================================================
 
-//=================================================================================
-
 // Namespace global para os métodos usados 
 namespace teoriaDosNumeros{
-    class mmc{
-        private:
-            int a;
-            int b;
-            int mmcResult;
-        public:
-            mmc(int a, int b);
-            mmc (mdc d);
-            void setA(int a);
-            void setB(int b);
-            
-            int getA();
-            int getB();
-            int getMmcResult();
-    }; // End mmc
     class mdc{
         private:
             // Atibutos internos que guardam os dados da classe
@@ -59,6 +42,21 @@ namespace teoriaDosNumeros{
         void calc_x();
         void calc_y();
     }; // End mdc
+    class mmc{
+        private:
+            int a;
+            int b;
+            int mmcResult;
+        public:
+            mmc(int a, int b);
+            mmc (mdc d);
+            void setA(int a);
+            void setB(int b);
+            
+            int getA();
+            int getB();
+            int getMmcResult();
+    }; // End mmc
 }; // End namespace
 
 #endif

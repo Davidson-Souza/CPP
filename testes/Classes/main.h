@@ -2,6 +2,6 @@
 #ifndef MAIN
   #define MAIN
   #include "../../src/Classe/Pessoa/Pessoa.h"
-  #include "../../src/Classe/Produto/Produto.cpp"
+  #include "../../src/Classe/Produto/Produto.h"
   #include <iostream>
 #endif
