@@ -1,4 +1,5 @@
 #include "main.h"
+
 int main(void){
     int a, b;
     std::cout << "Digite um inteiro A: ";
