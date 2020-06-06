@@ -16,7 +16,7 @@ void Block::mining(Mempool &currentMempool,void (*callback)(void))
     
     char *rawData, *hash, *rawHeader;
     this->getRawData(rawData);
-    this->merkleTop = createMerkleTree()
+    this->merkleTop = createMerkleTree(this->txVector, this->txCount);
     long int i;
     do
     {

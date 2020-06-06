@@ -8,6 +8,8 @@
  * │    Data    │                   Data: Os dados armazenados na transação
  * └────────────┘
  */
+#ifndef TRANSACTION
+#define TRANSACTION
 #include <time.h>
 #define HASH_LENGTH 32
 
@@ -19,7 +21,7 @@ class Transaction
         char *data;
     public: 
         Transaction(char *data);
-
+        Transaction();
         // Apenas métodos de get, pois uma vez criada a transação ela é irreversível
         time_t getTimeLock();
         char *getHash();
@@ -27,3 +29,5 @@ class Transaction
         void getRawData(char *data); // Retorna os dados todos juntos em uma string única
 
 };
+
+#endif

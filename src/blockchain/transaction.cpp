@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-
+Transaction::Transaction()
+{
+    this->data = "";
+}
 Transaction::Transaction(char *data)
 {
     if (strlen(data) > 100)

@@ -1,3 +1,5 @@
+#ifndef MD5
+#define MD5
 #include <openssl/evp.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,3 +17,4 @@ void bytes2md5(const char *data, int len, char *md5buf) {
     snprintf(&(md5buf[i * 2]), 16 * 2, "%02x", md_value[i]);
   }
 }
+#endif
