@@ -6,9 +6,9 @@
  * 
  * ┌────────────┐  	       ┌────────────┐  	        ┌────────────┐
  * │     Head   │   ┌─────>│     Head   │   ┌─────> │     Head   │   
- * |      Tx    │  	│      |      Tx    │  	│       |      Tx    │  	
- * │      Tx    │  	│      │      Tx    │  	│       │      Tx    │  	
- * │      Tx    │  	│      │      Tx    │  	│       │      Tx    │  	
+ * │      Tx    │  	╽      |      Tx    │  	╽       |      Tx    │  	
+ * │      Tx    │  	╽      │      Tx    │  	╽       │      Tx    │  	
+ * │      Tx    │  	╽      │      Tx    │  	╽       │      Tx    │  	
  * │     Hash   │───┘      │     Hash   │───┘       │     Hash   │
  * └────────────┘          └────────────┘           └────────────┘
  * O bloco é formado por transações individuais, um cabeçálho e uma hash (ou assinatura) que depende, 
@@ -17,10 +17,25 @@
  */
 #ifndef BLOCKCHAIN
 #define BLOCKCHAIN
+#define MAX_CHAIN_SIZE 100
+#include "block.cpp"
+#include "mempool.cpp"
 class BlockChain
 {
+    private:
+        Block blks[MAX_CHAIN_SIZE];
+        int blkCount;
+        Mempool mempool;
+    public:
+        int isRunning;
+        BlockChain();
+        void createGenesisBlock();
+        int runChain();
+        int newTx(char *data);
+        int newBlock();
+        int getNumBlk();
+        Mempool getCurrentMempool();
 
 };
 
 #endif
-

@@ -11,11 +11,12 @@
  * |    Hash    │
  * └────────────┘
  */
-#ifndef TRANSACTION
-#define TRANSACTION
+#ifndef BLOCK
+#define BLOCK
 #define MAX_SIZE 100
-#define TARGET_NUM 123234345
+#define TARGET_NUM 12
 #define MAX_DATA_SIZE 10000
+#define MAX_BUFFER_SIZE 1000
 #define MAX_HEADER_SIZE 1000
 #include "transaction.cpp"
 #include "mempool.cpp"
@@ -28,17 +29,23 @@ class Block
         char *previusHash;
         time_t timestamp;
         char *proof;
+        int height;
+        int difficulty;
         unsigned long nonce;
         Transaction txVector[MAX_SIZE];
         char *merkleTop;
     public:
-        Block(char *previusHash);
+        Block(int height, int difficulty);
+        Block();
         int getTxCount();
+        int getHeight();
         Transaction getTxByIndex(int index);
         char *getMerkleTop();
-        void getRawHeader(char *header);
-        void getRawData(char *buffer);
-        void mining(Mempool &currentMempool,void (*callback)(void));   // Após minerado, chame a blockchain novamente
+        char *getRawHeader();
+        char *getRawData();
+        char *getProof();
+        void setPreviusHash(char prevHash[MAX_BUFFER_SIZE]);
+        void mining(Mempool &currentMempool);   // Após minerado, chame a blockchain novamente
 };
 
 #endif

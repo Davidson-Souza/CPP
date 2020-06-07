@@ -70,7 +70,6 @@ char *createMerkleTree(Transaction *txList, int txCount)
     Transaction *_txList;
     if (txCount % 2 == 1)
     {
-        printf("ímpar");
         _txList = new Transaction[txCount+1];
         for (register unsigned int i = 0; i < txCount; i++)
             _txList[i] = txList[i];

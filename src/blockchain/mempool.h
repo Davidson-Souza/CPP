@@ -4,7 +4,7 @@
 #ifndef MEMPOOL
 #define MEMPOOL
 #include "transaction.cpp"
-#define MAX_MEMPOOL_SIZE
+#define MAX_MEMPOOL_SIZE 100
 class Mempool
 {
     private:
@@ -12,10 +12,11 @@ class Mempool
         Transaction txList[MAX_MEMPOOL_SIZE];
     public:
         Mempool();
-        int addTx();        // Retorna o id
-        int removeTx();
+        int addTx(Transaction tx);        // Retorna o id
+        int removeTxByIndex();
         int getTxCount();
         Transaction getTxById(int id);
+        Transaction retrieveTxById(int id);
         
 };
 #endif

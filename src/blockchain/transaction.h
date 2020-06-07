@@ -29,5 +29,4 @@ class Transaction
         void getRawData(char *data); // Retorna os dados todos juntos em uma string única
 
 };
-
 #endif

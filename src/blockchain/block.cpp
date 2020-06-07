@@ -1,51 +1,88 @@
+#ifndef BLOCK_CPP
+#define BLOCK_CPP
 #include "block.h"
 #include "utilities/merkle.cpp"
-Block::Block(char *previusHash)
+#include <string>
+#include <unistd.h>
+#define zeroHash "0000000000000000000000"
+Block::Block(int height, int difficulty)
 {
     this->txCount = 0;
+    this->height = height;
+    this->difficulty = difficulty;
     this->merkleTop = "";
-    this->previusHash = previusHash;
     this->nonce = 0;
     this->timestamp = time(NULL);
 }
-void Block::mining(Mempool &currentMempool,void (*callback)(void))
+void Block::setPreviusHash(char prevHash[MAX_BUFFER_SIZE])
 {
-    this->txCount = currentMempool.getTxCount() > MAX_SIZE ? MAX_SIZE : currentMempool.getTxCount();
-    for (register int i = 0; i < this->txCount; i++)
-        this->txVector[i] = currentMempool.getTxById(i);
-    
-    char *rawData, *hash, *rawHeader;
-    this->getRawData(rawData);
-    this->merkleTop = createMerkleTree(this->txVector, this->txCount);
-    long int i;
-    do
-    {
-        this->getRawHeader(rawHeader);
-        strcat(rawData, rawHeader);
-        bytes2md5(rawData, 32, hash);
-        i = strtol(hash, &hash, 16);
-    }
-    while(i<TARGET_NUM);
-    this->proof = hash;
-    callback();
+    this->previusHash = prevHash;
+    printf("Previus Hash: %s\n", this->previusHash);
 }
 
-void Block::getRawData(char *buffer)
+Block::Block()
 {
-    char rawData[MAX_DATA_SIZE];
-    for (register int i = 0; i < this->txCount; i++)
+    this->txCount = 0;
+    this->height = 0;
+    this->difficulty = 0;
+    this->merkleTop = (char *) "";
+    this->previusHash = (char *) "";
+    this->nonce = 0;
+    this->timestamp = time(NULL);
+}
+
+
+void Block::mining(Mempool &currentMempool)
+{
+    this->txCount = currentMempool.getTxCount() > MAX_SIZE ? MAX_SIZE : currentMempool.getTxCount();
+    char dest[100];
+    for (unsigned register int i = 0; i < this->txCount; i++)
     {
-        char *txData;
+        this->txVector[i] = currentMempool.retrieveTxById(i);
+        this->txVector[i].getRawData(dest);
+        printf("Transaction #%d: %s\n", i, dest);
+    }
+    
+    char *rawData = new char[MAX_BUFFER_SIZE], hash[100], *_rawData = new char[MAX_BUFFER_SIZE];
+;
+    if(txCount > 0)
+    {
+        this->merkleTop = createMerkleTree(this->txVector, this->txCount);
+        rawData = this->getRawData();
+    }
+    else
+    {
+        strcpy(_rawData, "");
+    }
+    strcat(_rawData, this->getRawHeader());
+    int hInt;
+    do
+    {
+        sprintf(_rawData, "%s%d", rawData, nonce);
+        bytes2md5(_rawData, 100, hash);
+        nonce++;
+    }
+    while(strncmp(hash, zeroHash, this->difficulty) != 0);
+    this->proof = hash;
+}
+// 16:34
+
+char *Block::getRawData()
+{
+    char *rawData = new char [MAX_DATA_SIZE];
+    for (unsigned register int i = 0; i < this->txCount; i++)
+    {
+        char txData[MAX_BUFFER_SIZE];
         this->txVector[i].getRawData(txData);
         sprintf(rawData, "%s", txData);
     }
-    buffer = rawData;
+    return rawData;
 }
-void Block::getRawHeader(char *header)
+char *Block::getRawHeader()
 {
-    char blockHeader[MAX_HEADER_SIZE];
-    sprintf(blockHeader, "%s%d%d%d", this->previusHash, this->timestamp, this->txCount, this->nonce);
-    header = blockHeader;
+    char *blockHeader = new char [MAX_HEADER_SIZE];
+    sprintf(blockHeader, "%s%s%d%d%d", this->previusHash,this->merkleTop, this->timestamp, this->txCount, this->height);
+    return blockHeader;
 }
 
 int Block::getTxCount()
@@ -60,4 +97,13 @@ char *Block::getMerkleTop()
 {
     return this->merkleTop;
 }
+char *Block::getProof()
+{
+    return this->proof;
+}
+int Block::getHeight()
+{
+    return this->height;
+}
 
+#endif

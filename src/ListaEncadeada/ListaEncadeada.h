@@ -11,7 +11,7 @@
  *  * Quant                                *  * Prox:                          *
  *  * Header                               *  * Data:                          *
  *  +======================================+  +================================+ 
- * @Author: Derik
+ * @Author: Davidson Souza
  * @Data: Oct, 2019
  * 
 */  

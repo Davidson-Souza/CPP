@@ -1,9 +1,11 @@
-#include "transaction.h"
 #include "utilities/md5.c"
 
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include "transaction.h"
+#ifndef TRANSACTION_CPP
+#define TRANSACTION_CPP
 Transaction::Transaction()
 {
     this->data = "";
@@ -16,10 +18,12 @@ Transaction::Transaction(char *data)
         return;
     }
 
-    bytes2md5(data,HASH_LENGTH,this->hash);
-
     this->timeLock = time(NULL);
     this->data = data;
+
+    char _rawData[100];
+    this->getRawData(_rawData);
+    bytes2md5(_rawData,sizeof(char) * strlen(_rawData),this->hash);
 }
 
 time_t Transaction::getTimeLock()
@@ -40,3 +44,5 @@ void Transaction::getRawData(char dest[1000])
 {
     sprintf(dest, "%s%s%d", this->data, this->hash, this->timeLock);
 }
+
+#endif
