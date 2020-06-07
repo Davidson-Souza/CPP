@@ -25,15 +25,20 @@ class BlockChain
     private:
         Block blks[MAX_CHAIN_SIZE];
         int blkCount;
+        int blocksPerPage;
+        int page;
+        int difficulty;
         Mempool mempool;
     public:
         int isRunning;
-        BlockChain();
+        BlockChain(int blocksPerPage, int difficulty);
         void createGenesisBlock();
         int runChain();
         int newTx(char *data);
         int newBlock();
         int getNumBlk();
+        void saveToDisk();
+        Block pop();
         Mempool getCurrentMempool();
 
 };

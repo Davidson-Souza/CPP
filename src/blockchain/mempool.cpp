@@ -18,12 +18,12 @@ Transaction Mempool::getTxById(int id)
 {
     return this->txList[id];
 }
-Transaction Mempool::retrieveTxById(int id)
+Transaction Mempool::pop()
 {
     if(this->txCount > 0)
     {
         this->txCount--;
     }
-    return this->txList[id];
+    return this->txList[this->txCount];
 }
 #endif

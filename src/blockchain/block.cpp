@@ -11,19 +11,20 @@ Block::Block(int height, int difficulty)
     this->height = height;
     this->difficulty = difficulty;
     this->merkleTop = "";
+    this->proof = "";
     this->nonce = 0;
     this->timestamp = time(NULL);
 }
 void Block::setPreviusHash(char prevHash[MAX_BUFFER_SIZE])
 {
     this->previusHash = prevHash;
-    printf("Previus Hash: %s\n", this->previusHash);
 }
 
 Block::Block()
 {
     this->txCount = 0;
     this->height = 0;
+    this->proof = "";
     this->difficulty = 0;
     this->merkleTop = (char *) "";
     this->previusHash = (char *) "";
@@ -38,12 +39,12 @@ void Block::mining(Mempool &currentMempool)
     char dest[100];
     for (unsigned register int i = 0; i < this->txCount; i++)
     {
-        this->txVector[i] = currentMempool.retrieveTxById(i);
+        this->txVector[i] = currentMempool.pop();
         this->txVector[i].getRawData(dest);
         printf("Transaction #%d: %s\n", i, dest);
     }
     
-    char *rawData = new char[MAX_BUFFER_SIZE], hash[100], *_rawData = new char[MAX_BUFFER_SIZE];
+    char *rawData = new char[MAX_BUFFER_SIZE], *hash = new char[100], *_rawData = new char[MAX_BUFFER_SIZE];
 ;
     if(txCount > 0)
     {
@@ -63,7 +64,7 @@ void Block::mining(Mempool &currentMempool)
         nonce++;
     }
     while(strncmp(hash, zeroHash, this->difficulty) != 0);
-    this->proof = hash;
+    proof = hash;
 }
 // 16:34
 

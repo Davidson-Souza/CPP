@@ -16,7 +16,7 @@ class Mempool
         int removeTxByIndex();
         int getTxCount();
         Transaction getTxById(int id);
-        Transaction retrieveTxById(int id);
+        Transaction pop();
         
 };
 #endif
