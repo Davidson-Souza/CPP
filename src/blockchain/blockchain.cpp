@@ -50,7 +50,7 @@ int BlockChain::newBlock()
 int BlockChain::runChain()
 {
     createGenesisBlock();
-    printf("Genesis Block Found: %s\n", this->blks[blkCount].getProof());
+    //printf("Genesis Block Found: %s\n", this->blks[blkCount].getProof());
     this->isRunning = 1;
     this->newBlock();
     this->newBlock();
@@ -60,7 +60,7 @@ int BlockChain::runChain()
     for(;;)
     {
         this->newBlock();
-        printf("New block founded!: %s\n", this->blks[blkCount - 1].getProof());
+        //printf("New block founded!: %s\n", this->blks[blkCount - 1].getProof());
         if(this->blkCount == this->blocksPerPage)
             this->saveToDisk();
     }

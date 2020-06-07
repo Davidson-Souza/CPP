@@ -41,7 +41,7 @@ void Block::mining(Mempool &currentMempool)
     {
         this->txVector[i] = currentMempool.pop();
         this->txVector[i].getRawData(dest);
-        printf("Transaction #%d: %s\n", i, dest);
+        //printf("Transaction #%d: %s\n", i, dest);
     }
     
     char *rawData = new char[MAX_BUFFER_SIZE], *hash = new char[100], *_rawData = new char[MAX_BUFFER_SIZE];

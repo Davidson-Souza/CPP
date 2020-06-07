@@ -16,7 +16,7 @@ char *getTxPairHash(Transaction t1, Transaction t2)
     t2.getRawData(aux);
     strcat(buffer, aux);
     char *_buff = new char[100];
-    bytes2md5(buffer, 32, _buff);
+    bytes2md5(buffer, strlen(_buff), _buff);
     return _buff;
 }
 /**
@@ -27,7 +27,7 @@ char *getHashPairHash( char *h1, char *h2)
     char buffer[MAX_BUFFER_SIZE], *aux = new char[MAX_BUFFER_SIZE];
     strcat(buffer, h1);
     strcat(buffer, h2);
-    bytes2md5(buffer, 32, aux);
+    bytes2md5(buffer, strlen(aux), aux);
     return aux;
 }
 

@@ -23,7 +23,7 @@ Transaction::Transaction(char *data)
 
     char _rawData[100];
     this->getRawData(_rawData);
-    bytes2md5(_rawData,sizeof(char) * strlen(_rawData),this->hash);
+    bytes2md5(_rawData,strlen(_rawData),this->hash);
 }
 
 time_t Transaction::getTimeLock()
