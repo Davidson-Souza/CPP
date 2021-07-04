@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <vector>
+#include <math.h>
+
+
+#define MIN_DIFF 0x00000377ae000000
+
+#define ROTL(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
+#define ROTR(value, bits) (((value) >> (bits)) | ((value) << (32 - (bits))))
+#define T(i)\
+            temp = (ROTL(a, 5) + f + e + k + w[i]);\
+            e = d;  \
+            d = c;  \
+            c = ROTL(b, 30);\
+            b = a;\
+            a = temp;
+
+#define S(t) w[t] = ROTL(w[t-3] ^ w[t-8] ^ w[t-14] ^ w[t-16], 1);
+#define F1(i) f = (b & c) | ((~b) & d);k = 0x5A827999; T(i);
+#define F2(i) f = b ^ c ^ d; k = 0x6ED9EBA1; T(i);
+#define F3(i) f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; T(i);
+#define F4(i) f = b ^ c ^ d; k = 0xCA62C1D6; T(i);
+
+unsigned int h0 = 0x67452301;
+unsigned int h1 = 0xEFCDAB89;
+unsigned int h2 = 0x98BADCFE;
+unsigned int h3 = 0x10325476;
+unsigned int h4 = 0xC3D2E1F0;
+unsigned int W[16] = {0x0};
+unsigned char blk1[] = {0x0};
+
+
+unsigned int a = h0, b = h1, c = h2, d = h3, e = h4, f = 0, temp = 0, k = 0, i = 0;
+unsigned int w[80];
+unsigned long target = MIN_DIFF;
+unsigned long hash;
+int mine(unsigned int *blk, char *dgst)
+{
+while(1)
+{
+    memcpy(w, blk, 16 * sizeof(int));
+
+    S(16) S(17) S(18) S(19)
+    S(20) S(21) S(22) S(23) S(24) S(25) S(26) S(27) S(28) S(29)
+    S(30) S(31) S(32) S(33) S(34) S(35) S(36) S(37) S(38) S(39)
+    S(40) S(41) S(42) S(43) S(44) S(45) S(46) S(47) S(48) S(49)
+    S(50) S(51) S(52) S(53) S(54) S(55) S(56) S(57) S(58) S(59) 
+    S(60) S(61) S(62) S(63) S(64) S(65) S(66) S(67) S(68) S(69)
+    S(70) S(71) S(72) S(73) S(74) S(75) S(76) S(77) S(78) S(79)
+
+    F1(0 ) F1(1 ) F1(2 ) F1(3 ) F1(4 ) F1(5 ) F1(6 ) F1(7 ) F1(8 ) F1(9 )
+    F1(10) F1(11) F1(12) F1(13) F1(14) F1(15) F1(16) F1(17) F1(18) F1(19)
+    F2(20) F2(21) F2(22) F2(23) F2(24) F2(25) F2(26) F2(27) F2(28) F2(29)
+    F2(30) F2(31) F2(32) F2(33) F2(34) F2(35) F2(36) F2(37) F2(38) F2(39)
+    F3(40) F3(41) F3(42) F3(43) F3(44) F3(45) F3(46) F3(47) F3(48) F3(49)
+    F3(50) F3(51) F3(52) F3(53) F3(54) F3(55) F3(56) F3(57) F3(58) F3(59)
+    F4(60) F4(61) F4(62) F4(63) F4(64) F4(65) F4(66) F4(67) F4(68) F4(69)
+    F4(70) F4(71) F4(72) F4(73) F4(74) F4(75) F4(76) F4(77) F4(78) F4(79)
+    
+    h0 = h0 + a;
+    h1 = h1 + b;
+    h2 = h2 + c;
+    h3 = h3 + d;
+    h4 = h4 + e;
+    
+    hash = ((unsigned long)h0 << 32) | h1;
+
+    if(hash <= target)
+    {
+        sprintf(dgst, "%08x%08x%08x%08x%08x", h0, h1, h2, h3, h4);
+        return blk[15];
+    }
+    blk[15] ++;
+}
+
+}
+#define BLOCK_SPAN 60 * 10
+
+typedef struct Block
+{
+    int height;
+    time_t timestamp;
+} block;
+
+int main()
+{
+    int i = 0;
+    std::vector <block> blkList;
+    block *blk;
+
+    W[15] = sizeof(time_t);
+
+    char dgst[50] = {0};
+    printf("Mining with %16lx diff\n", 0xFFFFFFFFFFFFFFFF/target);
+
+loop:
+    if((i % 2016) == 0 && i != 0) 
+    {
+        int actual = blkList.back().timestamp - blkList[i - 2016].timestamp;
+        target *= actual;
+        target /= BLOCK_SPAN * 2016;
+        if(target > MIN_DIFF)
+        {
+            target = MIN_DIFF;
+        }
+        printf("Mining with %16lx diff - Timespan: %d - blk: %d - hashrate: %f h/s\n", MIN_DIFF/target, actual, i, (1/((float)target/0xFFFFFFFFFFFFFFFF))/BLOCK_SPAN);
+    }
+    blk = new block;
+    blkList.push_back(*blk);
+    blkList.back().height = ++i;
+    blkList.back().timestamp = time(NULL);
+
+
+    W[0] = blkList.back().timestamp;
+    mine(W, dgst);
+    printf("%04d %s\n", blkList.back().height, dgst);
+    goto loop;
+    return 0;
+}
