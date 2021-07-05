@@ -155,6 +155,9 @@ void sha_finalize(struct sha_ctx *ctx, unsigned char ret[32])
 
 
 }
+
+#ifdef TEST
+
 int main()
 {
     char *str = (char *) malloc(1000000);
@@ -174,4 +177,4 @@ int main()
     printf("\n");
     return 0;
 }
-/* 248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1 */
+#endif
