@@ -3,4 +3,3 @@ bin/*
 .gdb_history
 teste*
 peda-session-teste*
-.*
