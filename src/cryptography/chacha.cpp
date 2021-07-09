@@ -4,14 +4,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-// 0010 0000 0000 0000 0000 0010 0000 0000
-// 0000 0000 0000 0001 0000 0000 0001 0000
-// 
 
-// 0001 
-// 0101
-// ----
-// 0100
 #define ROTL(a,b) (((a) << (b)) | ((a) >> (32 - (b))))
 #define QR(a, b, c, d) (			\
 	a += b,  d ^= a,  d = ROTL(d,16),	\
@@ -75,17 +68,17 @@ void chacha(char *cipherText, const char *rawText, const size_t inSize, const ch
 
 int main()
 {
-    /*std::string input;
+    std::string input;
     std::cin >> input;
     const uint8_t size = input.size();
     char *cipherText =(char *) malloc(size);
     memset(cipherText, 0, size);
+    const char key[] = "Correct horse battery staple   ";
 
     chacha(cipherText, input.c_str(), size, key);
     for(unsigned register int i = 0; i < size; i++)
         printf("%02x", cipherText[i]);
     
-    const char key[] = "Correct horse battery staple   ";
 
     unsigned char txtPre[] = {0x05, 0xdc, 0x8c, 0xc6, 0xd3};
     char txt[5];
@@ -98,28 +91,6 @@ int main()
     for(unsigned register int i = 0; i < 5; i++)
         printf("%c", txt[i]);
     
-    printf("\n");*/
-    // a = 5(00000101), b = 9(00001001) 
-    unsigned char a = 5, b = 9; 
-  
-    // The result is 00000001 
-    printf("a = %d, b = %d\n", a, b); 
-    printf("a&b = %d\n", a & b); 
-  
-    // The result is 00001101 
-    printf("a|b = %d\n", a | b); 
-  
-    // The result is 00001100 
-    printf("a^b = %d\n", a ^ b); 
-  
-    // The result is 11111010 
-    printf("~a = %d\n", a = ~a); 
-  
-    // The result is 00010010 
-    printf("b<<1 = %d\n", b << 1); 
-  
-    // The result is 00000100 
-    printf("b>>1 = %d\n", b >> 1); 
-  
+    printf("\n");
     return 0; 
 }
