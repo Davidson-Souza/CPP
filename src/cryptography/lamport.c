@@ -1,6 +1,7 @@
 #ifndef LAMPORT_C
 #define LAMPORT_C
 #include "lamport.h"
+
 int sign
 (
     struct sha_ctx ctx,
@@ -103,7 +104,7 @@ int gen_priv_key
     // This is her private key and she will store it away in a secure place for later use. 
 
     //This script will create the keys in a deterministic way, using the prior key and the
-    // index. The very first keypair is derived *entropy* as initiation vector.
+    // index. The very first keypair is derived using *entropy* as an initiation vector.
     unsigned int i = 0;
 
     // Unroll the fist iteraction
