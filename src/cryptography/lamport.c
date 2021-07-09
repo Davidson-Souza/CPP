@@ -47,7 +47,6 @@ int verify
     for(unsigned register int i = 0; i < 256; i++)
     {
         sig_ver[i] = dgst[(int)i / 8] & (0x01 << (i % 8)) ? pub_key[(2 * i)] : pub_key[(2 * i) + 1];
-        //dgst[(int)i/32] >>= 1;
     }
     // Then Bob hashes each of the 256 random numbers in Alice's signature
     unsigned char sig_ver_final[256][32] = {0};
