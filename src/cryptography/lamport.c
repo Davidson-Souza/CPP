@@ -103,7 +103,7 @@ int gen_priv_key
     // that is, a total of 2×256×256 bits = 128 Kibit in total.
     // This is her private key and she will store it away in a secure place for later use. 
 
-    //This script will create the keys in a deterministic way, using the prior key and the
+    //This script will create the keys in a deterministic way, hashing the prior key and the
     // index. The very first keypair is derived using *entropy* as an initiation vector.
     unsigned int i = 0;
 
