@@ -102,21 +102,15 @@ int gen_priv_key
     // that is, a total of 2×256×256 bits = 128 Kibit in total.
     // This is her private key and she will store it away in a secure place for later use. 
 
-    //This script will create the keys in a deterministic way, hashing the prior key and the
-    // index. The very first keypair is derived using *entropy* as an initiation vector.
-    unsigned int i = 0;
+    //This scrip grabs a random number from the standard library's method (rand()), but this
+    // method is just terrible, use a better entropy source.
 
-    // Unroll the fist iteraction
-    sha_init(&ctx);
-    sha_update(&ctx, entropy, 32);
-    sha_update(&ctx, (char *) &i, sizeof(int));
-    sha_finalize(&ctx, priv_key[i]);
-    i++;
-    for(; i<512; i++)
+    /** @todo: {Key_(i+1), Chaincode_(i+1)} = HMAC-SHA512(key=index, data=Key|Chaincode) */  
+
+    for(unsigned register int i = 0; i<512; i++)
     {
         sha_init(&ctx);
-        sha_update(&ctx, priv_key[i - 1], 32);
-        sha_update(&ctx, (char *) &i, sizeof(int));
+        sha_update(&ctx, rand(), sizeof(int));
         sha_finalize(&ctx, priv_key[i]);
     }
 }
