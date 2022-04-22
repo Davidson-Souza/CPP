@@ -99,6 +99,7 @@ void FeistelEncrypt(char *out, char *msg, size_t len, unsigned char key[20]) {
 // so it is different functions
 void FeistelDecrypt(char *out, char *msg, size_t len, unsigned char key[20]) {
   char block[64];
+
   int blocks = (((len)/64));  //This assumes a block that have been padded BEFORE encryption
 
   for (unsigned int i = 0; i < blocks; i++) {
@@ -106,7 +107,7 @@ void FeistelDecrypt(char *out, char *msg, size_t len, unsigned char key[20]) {
     FeistelBlockEncrypt(block, out + (64 * i), key);
   }
 }
-#ifdef MAIN
+#ifdef TEST
 
 int main() {
   char msg[] = "A purely peer-to-peer version of electronic cash would allow online \
